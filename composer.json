@@ -1,0 +1,21 @@
+{
+    "name": "samlc/tp-repository",
+    "description": "thinkphp repository",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lichao",
+            "email": "lichao@xiaozhu.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "topthink/framework": "5.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "samlc\\" : "src"
+        }
+    }
+}
