@@ -17,6 +17,7 @@ namespace samlc\Examples\Criteria;
 
 use samlc\TpRepository\CriteriaInterface;
 use samlc\TpRepository\RepositoryInterface;
+use think\db\Query;
 
 class InventoryCriteria implements CriteriaInterface
 {
@@ -36,7 +37,7 @@ class InventoryCriteria implements CriteriaInterface
         $this->operation   = $operation;
     }
 
-    public function apply($model, RepositoryInterface $repository)
+    public function apply($model, RepositoryInterface $repository): Query
     {
         return $model->where('inventories', $this->operation, $this->operation);
     }

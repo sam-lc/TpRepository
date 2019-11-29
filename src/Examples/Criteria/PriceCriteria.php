@@ -17,6 +17,7 @@ namespace samlc\Examples\Criteria;
 
 use samlc\TpRepository\CriteriaInterface;
 use samlc\TpRepository\RepositoryInterface;
+use think\db\Query;
 
 class PriceCriteria implements CriteriaInterface
 {
@@ -41,9 +42,9 @@ class PriceCriteria implements CriteriaInterface
      * @param \think\Model $model
      * @param RepositoryInterface $repository
      *
-     * @return mixed|void
+     * @return Query
      */
-    public function apply($model, RepositoryInterface $repository)
+    public function apply($model, RepositoryInterface $repository): Query
     {
         return $model->where('price', $this->operation, $this->price);
     }

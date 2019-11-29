@@ -15,7 +15,9 @@
 namespace samlc\TpRepository;
 
 use samlc\TpRepository\Exception\ValidateException;
+use think\Collection;
 use think\Model;
+use think\Paginator;
 
 interface RepositoryInterface
 {
@@ -28,7 +30,7 @@ interface RepositoryInterface
      *
      * @return Model
      */
-    public function find($id): Model;
+    public function findId($id): Model;
 
     /**
      * Fun pushCriteria 设置查询标准
@@ -51,4 +53,47 @@ interface RepositoryInterface
      * @throws ValidateException
      */
     public function save($data = [], Model $model = null): Model;
+
+    /**
+     * Fun paginate 分页
+     * Created Time 2019-11-29 14:45
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param int $limit
+     *
+     * @return \think\Paginator
+     * @throws \think\exception\DbException
+     */
+    public function paginate(int $limit): Paginator;
+
+    /**
+     * Fun orderBy 排序
+     * Created Time 2019-11-29 14:42
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param string $filed
+     * @param string $direction
+     *
+     */
+    public function orderBy(string $filed, string $direction = 'asc'): void;
+
+    /**
+     * Fun findBy 批量查询
+     * Created Time 2019-11-29 14:20
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     *
+     * @return Collection
+     */
+    public function findBy(): Collection;
+
+    /**
+     * Fun find 查询-单个
+     * Created Time 2019-11-29 14:22
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     *
+     * @return Model
+     */
+    public function find();
 }

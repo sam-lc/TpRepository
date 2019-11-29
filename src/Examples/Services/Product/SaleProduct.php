@@ -47,7 +47,7 @@ class SaleProduct
         /**
          * @var Product $product
          */
-        $product = $this->productRepository->find($productId);
+        $product = $this->productRepository->findId($productId);
         $product->sale($saleCount);
         $total = $product->total($saleCount);
         $this->productRepository->save($product);

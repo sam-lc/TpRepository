@@ -19,6 +19,7 @@ use samlc\TpRepository\Exception\RepositoryException;
 use samlc\TpRepository\Exception\ValidateException;
 use think\Collection;
 use think\Model;
+use think\Paginator;
 use think\Validate;
 
 abstract class AbstractOrmRepository implements RepositoryInterface
@@ -28,6 +29,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     protected $model;
 
+    /**
+     * @var Collection
+     */
     protected $criteria;
 
     /**
@@ -39,6 +43,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
         $this->makeModel();
         $this->criteria = new Collection();
     }
+
 
     /**
      * Fun getModel 获取model类型
@@ -82,24 +87,6 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun makeModel 实例化Model
-     * Created Time 2019-11-26 18:09
-     * Author lichao <lichao@xiaozhu.com>
-     *
-     *
-     * @return object|Model
-     * @throws RepositoryException
-     */
-    public function makeModel()
-    {
-        $model = app()->make($this->model());
-        if (!$model instanceof Model) {
-            throw new RepositoryException('Class ' . $this->model() . ' must be an instance of think\\Model');
-        }
-        return $this->model = $model;
-    }
-
-    /**
      * Fun save Description 存储
      * Created Time 2019-11-27 10:57
      * Author lichao <lichao@xiaozhu.com>
@@ -138,13 +125,71 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function find($id): Model
+    public function findId($id): Model
     {
         $model = $this->model->get($id);
         if ($model == null) {
             throw new ModelNotFoundException('not found  ID = ' . $id . ' record in table' . $this->model->getTable());
         }
         return $model;
+    }
+
+    /**
+     * Fun find 查询-单个
+     * Created Time 2019-11-29 14:22
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     *
+     * @return Model
+     */
+    public function find()
+    {
+        $this->applyCriteria();
+        return $this->model->find();
+    }
+
+    /**
+     * Fun paginate 分页
+     * Created Time 2019-11-29 14:45
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param int $limit
+     *
+     * @return \think\Paginator
+     * @throws \think\exception\DbException
+     */
+    public function paginate(int $limit): Paginator
+    {
+        $this->applyCriteria();
+        return $this->model->paginate($limit);
+    }
+
+    /**
+     * Fun orderBy 排序
+     * Created Time 2019-11-29 14:42
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param string $filed
+     * @param string $direction
+     *
+     */
+    public function orderBy(string $filed, string $direction = 'asc'): void
+    {
+        $this->model = $this->model->order($filed, $direction);
+    }
+
+    /**
+     * Fun findBy 批量查询
+     * Created Time 2019-11-29 14:20
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     *
+     * @return Collection
+     */
+    public function findBy(): Collection
+    {
+        $this->applyCriteria();
+        return $this->model->select();
     }
 
     /**
@@ -164,7 +209,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * Created Time 2019-11-27 16:43
      * Author lichao <lichao@xiaozhu.com>
      */
-    public function applyCriteria()
+    protected function applyCriteria()
     {
         /**
          * @var $criterion CriteriaInterface
@@ -174,19 +219,23 @@ abstract class AbstractOrmRepository implements RepositoryInterface
         }
     }
 
+
     /**
-     * Fun __call 魔术方法转到model处理
-     * Created Time 2019-11-26 17:30
+     * Fun makeModel 实例化Model
+     * Created Time 2019-11-26 18:09
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param $name
-     * @param $arguments
      *
-     * @return mixed
+     * @return object|Model
+     * @throws RepositoryException
      */
-    public function __call($name, $arguments)
+    protected function makeModel()
     {
-        $this->applyCriteria();
-        return $this->model->{$name}($arguments);
+        $model = app()->make($this->model());
+        if (!$model instanceof Model) {
+            throw new RepositoryException('Class ' . $this->model() . ' must be an instance of think\\Model');
+        }
+        return $this->model = $model;
     }
+
 }
