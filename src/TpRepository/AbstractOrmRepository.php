@@ -21,7 +21,6 @@ use think\Collection;
 use think\db\Query;
 use think\Model;
 use think\Paginator;
-use think\Validate;
 
 abstract class AbstractOrmRepository implements RepositoryInterface
 {
@@ -77,16 +76,16 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * Author lichao <lichao@xiaozhu.com>
      *
      *
-     * @return object|null
+     * @return Validate
      * @throws ValidateException
      */
-    public function makeValidator()
+    public function makeValidator(): Validate
     {
         $validatorInstance = null;
         if ($this->validator() != null) {
             $validatorInstance = app()->make($this->validator());
             if (!$validatorInstance instanceof Validate) {
-                throw new ValidateException('Class ' . $this->validator() . 'is not instanceof think//Validate');
+                throw new ValidateException('Class ' . $this->validator() . 'is not instanceof samlc//TpRepository//Validate');
             }
         }
         return $validatorInstance;
@@ -109,7 +108,14 @@ abstract class AbstractOrmRepository implements RepositoryInterface
         if ($validator != null) {
             $data = array_merge($model->toArray(), $data);
             if (!$validator->check($data)) {
-                throw new ValidateException($validator->getError());
+                $message = $validator->getMessage();
+                throw new ValidateException(
+                    str_replace(
+                        array_keys($message),
+                        array_values($message),
+                        $validator->getError()
+                    )
+                );
             }
         }
 
