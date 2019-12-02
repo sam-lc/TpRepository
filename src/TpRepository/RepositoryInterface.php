@@ -42,17 +42,18 @@ interface RepositoryInterface
     public function pushCriteria(CriteriaInterface $criteria): void;
 
     /**
-     * Fun save Description 存储
-     * Created Time 2019-11-27 10:57
+     * Fun save 存储
+     * Created Time 2019-12-02 10:28
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param array $data
-     * @param Model|null $model
+     * @param Model $model  模型
+     * @param array $data   数据
+     * @param string $scene 验证场景
      *
      * @return Model
      * @throws ValidateException
      */
-    public function save(Model $model = null, $data = []): Model;
+    public function save(Model $model, $data = [], $scene = ''): Model;
 
     /**
      * Fun paginate 分页

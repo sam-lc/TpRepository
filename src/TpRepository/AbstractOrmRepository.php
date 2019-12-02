@@ -96,18 +96,23 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * Created Time 2019-12-02 10:28
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param Model|null $model 模型
-     * @param array $data       数据
+     * @param Model $model  模型
+     * @param array $data   数据
+     * @param string $scene 验证场景
      *
      * @return Model
      * @throws ValidateException
      */
-    public function save(Model $model = null, $data = []): Model
+    public function save(Model $model, $data = [], $scene = ''): Model
     {
         $validator = $this->makeValidator();
         if ($validator != null) {
             $data = array_merge($model->toArray(), $data);
             if (!$validator->check($data)) {
+                if ($validator->hasScene($scene)) {
+                    $validator->scene($scene);
+                }
+
                 $message = $validator->getMessage();
                 throw new ValidateException(
                     str_replace(
@@ -119,13 +124,8 @@ abstract class AbstractOrmRepository implements RepositoryInterface
             }
         }
 
-        if ($model != null) {
-            $model->save($data);
-            return $model;
-        } else {
-            $this->model->save($data);
-            return $this->model;
-        }
+        $model->save($data);
+        return $model;
     }
 
     /**
