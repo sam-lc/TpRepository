@@ -1,4 +1,4 @@
-#install
+# install
 
 composer require samlc/tp-repository
 # 为什么会写这个组件
