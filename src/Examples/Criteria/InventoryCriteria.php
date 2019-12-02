@@ -37,8 +37,8 @@ class InventoryCriteria implements CriteriaInterface
         $this->operation   = $operation;
     }
 
-    public function apply($model, RepositoryInterface $repository): Query
+    public function apply($query, RepositoryInterface $repository): Query
     {
-        return $model->where('inventories', $this->operation, $this->operation);
+        return $query->where('inventories', $this->operation, $this->operation);
     }
 }

@@ -39,13 +39,13 @@ class PriceCriteria implements CriteriaInterface
      * Created Time 2019-11-27 16:48
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param \think\Model $model
+     * @param \think\Model $query
      * @param RepositoryInterface $repository
      *
      * @return Query
      */
-    public function apply($model, RepositoryInterface $repository): Query
+    public function apply($query, RepositoryInterface $repository): Query
     {
-        return $model->where('price', $this->operation, $this->price);
+        return $query->where('price', $this->operation, $this->price);
     }
 }

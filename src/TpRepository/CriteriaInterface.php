@@ -16,7 +16,6 @@
 namespace samlc\TpRepository;
 
 use think\db\Query;
-use think\Model;
 
 interface CriteriaInterface
 {
@@ -25,10 +24,10 @@ interface CriteriaInterface
      * Created Time 2019-11-27 16:46
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param Model $model
+     * @param Query $query
      * @param RepositoryInterface $repository
      *
      * @return mixed
      */
-    public function apply($model, RepositoryInterface $repository): Query;
+    public function apply(Query $query, RepositoryInterface $repository): Query;
 }

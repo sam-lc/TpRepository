@@ -52,7 +52,7 @@ interface RepositoryInterface
      * @return Model
      * @throws ValidateException
      */
-    public function save($data = [], Model $model = null): Model;
+    public function save(Model $model = null, $data = []): Model;
 
     /**
      * Fun paginate 分页

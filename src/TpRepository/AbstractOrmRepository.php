@@ -18,6 +18,7 @@ use samlc\TpRepository\Exception\ModelNotFoundException;
 use samlc\TpRepository\Exception\RepositoryException;
 use samlc\TpRepository\Exception\ValidateException;
 use think\Collection;
+use think\db\Query;
 use think\Model;
 use think\Paginator;
 use think\Validate;
@@ -35,6 +36,11 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     protected $criteria;
 
     /**
+     * @var Query
+     */
+    protected $query;
+
+    /**
      * AbstractOrmRepository constructor.
      * @throws RepositoryException
      */
@@ -42,8 +48,8 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->makeModel();
         $this->criteria = new Collection();
+        $this->makeQuery();
     }
-
 
     /**
      * Fun getModel 获取model类型
@@ -87,20 +93,21 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun save Description 存储
-     * Created Time 2019-11-27 10:57
+     * Fun save 存储
+     * Created Time 2019-12-02 10:28
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param array $data
-     * @param Model|null $model
+     * @param Model|null $model 模型
+     * @param array $data       数据
      *
      * @return Model
      * @throws ValidateException
      */
-    public function save($data = [], Model $model = null): Model
+    public function save(Model $model = null, $data = []): Model
     {
         $validator = $this->makeValidator();
         if ($validator != null) {
+            $data = array_merge($model->toArray(), $data);
             if (!$validator->check($data)) {
                 throw new ValidateException($validator->getError());
             }
@@ -116,13 +123,30 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun findId 根据ID查询
-     * Created Time 2019-11-26 17:30
+     * Fun update 批量更新-未进行数据格式正确性验证
+     * Created Time 2019-11-29 18:29
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param Model
+     * @param array $params 更新数据
      *
-     * @return mixed
+     * @return int|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function update(array $params)
+    {
+        $this->applyCriteria();
+        return $this->query->update($params);
+    }
+
+    /**
+     * Fun findId 根据id查询,抛出异常
+     * Created Time 2019-12-02 10:30
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param int|string $id
+     *
+     * @return Model
      * @throws ModelNotFoundException
      */
     public function findId($id): Model
@@ -135,17 +159,20 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun find 查询-单个
-     * Created Time 2019-11-29 14:22
+     * Fun find 单条记录
+     * Created Time 2019-11-29 18:33
      * Author lichao <lichao@xiaozhu.com>
      *
      *
-     * @return Model
+     * @return array|\PDOStatement|string|Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function find()
     {
         $this->applyCriteria();
-        return $this->model->find();
+        return $this->query->find();
     }
 
     /**
@@ -161,7 +188,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function paginate(int $limit): Paginator
     {
         $this->applyCriteria();
-        return $this->model->paginate($limit);
+        return $this->query->paginate($limit);
     }
 
     /**
@@ -175,21 +202,24 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     public function orderBy(string $filed, string $direction = 'asc'): void
     {
-        $this->model = $this->model->order($filed, $direction);
+        $this->model = $this->query->order($filed, $direction);
     }
 
     /**
-     * Fun findBy 批量查询
-     * Created Time 2019-11-29 14:20
+     * Fun findBy 查找记录
+     * Created Time 2019-11-29 18:34
      * Author lichao <lichao@xiaozhu.com>
      *
      *
      * @return Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function findBy(): Collection
     {
         $this->applyCriteria();
-        return $this->model->select();
+        return $this->query->select();
     }
 
     /**
@@ -215,10 +245,19 @@ abstract class AbstractOrmRepository implements RepositoryInterface
          * @var $criterion CriteriaInterface
          */
         foreach ($this->criteria as $criterion) {
-            $this->model = $criterion->apply($this->model, $this);
+            $this->query = $criterion->apply($this->query, $this);
         }
     }
 
+    /**
+     * Fun makeQuery 创建查询器
+     * Created Time 2019-11-29 18:25
+     * Author lichao <lichao@xiaozhu.com>
+     */
+    protected function makeQuery(): void
+    {
+        $this->query = $this->model->newQuery();
+    }
 
     /**
      * Fun makeModel 实例化Model
@@ -226,16 +265,14 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * Author lichao <lichao@xiaozhu.com>
      *
      *
-     * @return object|Model
      * @throws RepositoryException
      */
-    protected function makeModel()
+    protected function makeModel(): void
     {
         $model = app()->make($this->model());
         if (!$model instanceof Model) {
             throw new RepositoryException('Class ' . $this->model() . ' must be an instance of think\\Model');
         }
-        return $this->model = $model;
+        $this->model = $model;
     }
-
 }
