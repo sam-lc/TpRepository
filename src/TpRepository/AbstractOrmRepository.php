@@ -157,6 +157,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     public function findId($id): Model
     {
+        $this->applyCriteria();
         $model = $this->model->get($id);
         if ($model == null) {
             throw new ModelNotFoundException('not found  ID = ' . $id . ' record in table' . $this->model->getTable());
@@ -208,7 +209,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     public function orderBy(string $filed, string $direction = 'asc'): void
     {
-        $this->model = $this->query->order($filed, $direction);
+        $this->query = $this->query->order($filed, $direction);
     }
 
     /**
@@ -247,11 +248,13 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     protected function applyCriteria()
     {
-        /**
-         * @var $criterion CriteriaInterface
-         */
-        foreach ($this->criteria as $criterion) {
-            $this->query = $criterion->apply($this->query, $this);
+        if(!$this->criteria->isEmpty()){
+            /**
+             * @var $criterion CriteriaInterface
+             */
+            foreach ($this->criteria as $criterion) {
+                $this->query = $criterion->apply($this->query, $this);
+            }
         }
     }
 
