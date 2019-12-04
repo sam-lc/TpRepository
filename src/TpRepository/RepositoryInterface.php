@@ -68,6 +68,16 @@ interface RepositoryInterface
     public function paginate(int $limit): Paginator;
 
     /**
+     * Fun fields Description
+     * Created Time 2019-12-04 16:13
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $fields
+     * @param array $except
+     */
+    public function fields(array $fields = [], array $except = []): void;
+
+    /**
      * Fun orderBy 排序
      * Created Time 2019-11-29 14:42
      * Author lichao <lichao@xiaozhu.com>

@@ -199,6 +199,21 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
+     * Fun fields Description
+     * Created Time 2019-12-04 16:13
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $fields
+     * @param array $except
+     */
+    public function fields(array $fields = [], array $except = []): void
+    {
+        $fields      = $fields != null ? implode(',', $fields) : '*';
+        $except      = $except != null ? implode(',', $except) : '*';
+        $this->query = $this->query->field($fields, $except);
+    }
+
+    /**
      * Fun orderBy 排序
      * Created Time 2019-11-29 14:42
      * Author lichao <lichao@xiaozhu.com>
