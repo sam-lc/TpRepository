@@ -124,6 +124,14 @@ abstract class AbstractOrmRepository implements RepositoryInterface
             }
         }
 
+        foreach ($model->getRelation() as $relation => $attr) {
+            if ($attr instanceof Collection) {
+                $model->{$relation}()->saveAll($attr->toarray());
+            } elseif ($attr instanceof Model) {
+                $model = $model->together($relation);
+            }
+        }
+
         $model->save($data);
         return $model;
     }
