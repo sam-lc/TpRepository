@@ -103,16 +103,16 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * @return Model
      * @throws ValidateException
      */
-    public function save(Model $model, $data = [], $scene = ''): Model
+    public function save(Model $model, $scene = '', $data = []): Model
     {
         $validator = $this->makeValidator();
         if ($validator != null) {
             $data = array_merge($model->toArray(), $data);
-            if (!$validator->check($data)) {
-                if ($validator->hasScene($scene)) {
-                    $validator->scene($scene);
-                }
+            if ($validator->hasScene($scene)) {
+                $validator->scene($scene);
+            }
 
+            if (!$validator->check($data)) {
                 $message = $validator->getMessage();
                 throw new ValidateException(
                     str_replace(
@@ -248,7 +248,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     protected function applyCriteria()
     {
-        if(!$this->criteria->isEmpty()){
+        if (!$this->criteria->isEmpty()) {
             /**
              * @var $criterion CriteriaInterface
              */
