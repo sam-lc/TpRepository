@@ -21,4 +21,22 @@ abstract class Validate extends \think\Validate
      * @return array
      */
     abstract public function getMessage(): array;
+
+    /**
+     * Fun getValidateFields 获取验证字段
+     * Created Time 2019-12-04 17:24
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     *
+     * @return array
+     */
+    public function getValidateFields(): array
+    {
+        if ($this->currentScene != null) {
+            return $this->currentScene;
+        } else {
+            return array_keys($this->rule);
+        }
+    }
+
 }

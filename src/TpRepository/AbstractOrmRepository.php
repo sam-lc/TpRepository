@@ -122,6 +122,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
                     )
                 );
             }
+            $data = $this->only($data, $validator->getValidateFields());
         }
 
         foreach ($model->getRelation() as $relation => $attr) {
@@ -134,6 +135,31 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
         $model->save($data);
         return $model;
+    }
+
+    /**
+     * Fun only 获取数据指定字段
+     * Created Time 2019-12-04 17:28
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $attrs
+     * @param array $fields
+     *
+     * @return array
+     */
+    protected function only(array $attrs, array $fields)
+    {
+        $onlyAttr = [];
+        if ($fields != null) {
+            foreach ($fields as $field) {
+                if (isset($attrs[$field])) {
+                    $onlyAttr[$field] = $attrs[$field];
+                }
+            }
+        } else {
+            $onlyAttr = $attrs;
+        }
+        return $onlyAttr;
     }
 
     /**
