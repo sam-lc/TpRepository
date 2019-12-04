@@ -33,7 +33,7 @@ abstract class Validate extends \think\Validate
     public function getValidateFields(): array
     {
         if ($this->currentScene != null) {
-            return $this->currentScene;
+            return $this->only;
         } else {
             return array_keys($this->rule);
         }
