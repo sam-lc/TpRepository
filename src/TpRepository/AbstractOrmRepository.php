@@ -107,6 +107,43 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
+     * Fun delete 删除
+     * Created Time 2019-12-09 10:36
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param Model $model
+     *
+     * @return Model
+     * @throws \Exception
+     */
+    public function delete(Model $model): Model
+    {
+        $model->delete();
+        return $model;
+    }
+
+    /**
+     * Fun assign 赋值操作
+     * Created Time 2019-12-09 10:40
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $params
+     * @param Model $model
+     *
+     * @return Model
+     */
+    public function assign(array $params, Model $model = null): Model
+    {
+        if ($model == null) {
+            $model = $this->model;
+        }
+        foreach ($params as $key => $param) {
+            $model->{$key} = $param;
+        }
+        return $model;
+    }
+
+    /**
      * Fun saveAll 批量存储
      * Created Time 2019-12-09 10:18
      * Author lichao <lichao@xiaozhu.com>

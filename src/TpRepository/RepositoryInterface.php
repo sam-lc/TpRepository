@@ -42,6 +42,18 @@ interface RepositoryInterface
     public function pushCriteria(CriteriaInterface $criteria): void;
 
     /**
+     * Fun assign 赋值操作
+     * Created Time 2019-12-09 10:40
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $params
+     * @param Model $model
+     *
+     * @return Model
+     */
+    public function assign(array $params, Model $model = null): Model;
+
+    /**
      * Fun save 存储
      * Created Time 2019-12-09 10:16
      * Author lichao <lichao@xiaozhu.com>
@@ -51,6 +63,18 @@ interface RepositoryInterface
      * @return Model
      */
     public function save(Model $model): Model;
+
+    /**
+     * Fun delete 删除
+     * Created Time 2019-12-09 10:36
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param Model $model
+     *
+     * @return Model
+     * @throws \Exception
+     */
+    public function delete(Model $model): Model;
 
     /**
      * Fun saveAll 批量存储
