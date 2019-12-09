@@ -148,12 +148,13 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * @return Model
      * @throws ValidateException
      */
-    public function assign(array $params,string $scene = '', Model $model = null): Model
+    public function assign(array $params, string $scene = '', Model $model = null): Model
     {
-        $this->check($params,$scene);
         if ($model == null) {
-            $model = $this->model;
+            $model  = $this->model;
+            $params = array_merge($model->toArray(), $params);
         }
+        $this->check($params, $scene);
         foreach ($params as $key => $param) {
             $model->{$key} = $param;
         }
