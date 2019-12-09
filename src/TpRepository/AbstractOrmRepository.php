@@ -251,18 +251,19 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun findId 根据id查询,抛出异常
-     * Created Time 2019-12-02 10:30
+     * Created Time 2019-12-09 16:11
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param int|string $id
+     * @param $id
      *
      * @return Model
      * @throws ModelNotFoundException
+     * @throws \think\Exception\DbException
      */
     public function findId($id): Model
     {
         $this->applyCriteria();
-        $model = $this->model->get($id);
+        $model = $this->query->get($id);
         if ($model == null) {
             throw new ModelNotFoundException('not found  ID = ' . $id . ' record in table' . $this->model->getTable());
         }
