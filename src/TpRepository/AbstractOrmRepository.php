@@ -93,25 +93,51 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun save 存储
-     * Created Time 2019-12-02 10:28
+     * Created Time 2019-12-09 10:16
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param Model $model  模型
-     * @param array $data   数据
-     * @param string $scene 验证场景
+     * @param Model $model
      *
      * @return Model
+     */
+    public function save(Model $model): Model
+    {
+        $model->save();
+        return $model;
+    }
+
+    /**
+     * Fun saveAll 批量存储
+     * Created Time 2019-12-09 10:18
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $models
+     *
+     * @return bool
+     */
+    public function saveAll(array $models): bool
+    {
+        return $this->model->save($models);
+    }
+
+    /**
+     * Fun check Description
+     * Created Time 2019-12-09 09:59
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $data
+     * @param string $scene
+     *
+     * @return array
      * @throws ValidateException
      */
-    public function save(Model $model, $scene = '', $data = []): Model
+    public function check(array $data = [], $scene = ''): array
     {
         $validator = $this->makeValidator();
-        if ($validator != null) {
-            $data = array_merge($model->toArray(), $data);
+        if ($scene !== '' && $validator != null) {
             if ($validator->hasScene($scene)) {
                 $validator->scene($scene);
             }
-
             if (!$validator->check($data)) {
                 $message = $validator->getMessage();
                 throw new ValidateException(
@@ -122,19 +148,8 @@ abstract class AbstractOrmRepository implements RepositoryInterface
                     )
                 );
             }
-            $data = $this->only($data, $validator->getValidateFields());
         }
-
-        foreach ($model->getRelation() as $relation => $attr) {
-            if ($attr instanceof Collection) {
-                $model->{$relation}()->saveAll($attr->toarray());
-            } elseif ($attr instanceof Model) {
-                $model = $model->together($relation);
-            }
-        }
-
-        $model->save($data);
-        return $model;
+        return $this->only($data, $validator->getValidateFields());
     }
 
     /**

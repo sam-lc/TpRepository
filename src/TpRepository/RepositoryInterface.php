@@ -43,17 +43,14 @@ interface RepositoryInterface
 
     /**
      * Fun save 存储
-     * Created Time 2019-12-02 10:28
+     * Created Time 2019-12-09 10:16
      * Author lichao <lichao@xiaozhu.com>
      *
-     * @param Model $model  模型
-     * @param array $data   数据
-     * @param string $scene 验证场景
+     * @param Model $model
      *
      * @return Model
-     * @throws ValidateException
      */
-    public function save(Model $model, $scene = '', $data = []): Model;
+    public function save(Model $model): Model;
 
     /**
      * Fun paginate 分页
