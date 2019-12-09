@@ -53,6 +53,30 @@ interface RepositoryInterface
     public function save(Model $model): Model;
 
     /**
+     * Fun saveAll 批量存储
+     * Created Time 2019-12-09 10:18
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $models
+     *
+     * @return bool
+     */
+    public function saveAll(array $models): bool;
+
+    /**
+     * Fun check 检测
+     * Created Time 2019-12-09 09:59
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $data
+     * @param string $scene
+     *
+     * @return array
+     * @throws ValidateException
+     */
+    public function check(array $data = [], $scene = ''): array;
+
+    /**
      * Fun paginate 分页
      * Created Time 2019-11-29 14:45
      * Author lichao <lichao@xiaozhu.com>

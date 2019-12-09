@@ -121,7 +121,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun check Description
+     * Fun check 检测
      * Created Time 2019-12-09 09:59
      * Author lichao <lichao@xiaozhu.com>
      *
