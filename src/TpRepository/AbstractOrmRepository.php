@@ -313,7 +313,6 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function fields(array $fields = [], bool $except = false): void
     {
         $fields      = $fields != null ? implode(',', $fields) : '*';
-        $except      = $except != null ? implode(',', $except) : '*';
         $this->query = $this->query->field($fields, $except);
     }
 
