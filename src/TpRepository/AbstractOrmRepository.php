@@ -123,6 +123,20 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
+     * Fun batchDelete 批量删除
+     * Created Time 2019-12-09 11:01
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param array $ids
+     *
+     * @return bool
+     */
+    public function batchDelete(array $ids): bool
+    {
+        return $this->model->destroy($ids);
+    }
+
+    /**
      * Fun assign 赋值操作
      * Created Time 2019-12-09 10:40
      * Author lichao <lichao@xiaozhu.com>
