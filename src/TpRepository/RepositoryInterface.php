@@ -43,15 +43,17 @@ interface RepositoryInterface
 
     /**
      * Fun assign 赋值操作
-     * Created Time 2019-12-09 10:40
+     * Created Time 2019-12-09 11:06
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $params
-     * @param Model $model
+     * @param string $scene
+     * @param Model|null $model
      *
      * @return Model
+     * @throws ValidateException
      */
-    public function assign(array $params, Model $model = null): Model;
+    public function assign(array $params,string $scene = '', Model $model = null): Model;
 
     /**
      * Fun save 存储
