@@ -304,13 +304,13 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun fields Description
-     * Created Time 2019-12-04 16:13
+     * Created Time 2019-12-09 15:49
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $fields
-     * @param array $except
+     * @param bool $except
      */
-    public function fields(array $fields = [], array $except = []): void
+    public function fields(array $fields = [], bool $except = false): void
     {
         $fields      = $fields != null ? implode(',', $fields) : '*';
         $except      = $except != null ? implode(',', $except) : '*';

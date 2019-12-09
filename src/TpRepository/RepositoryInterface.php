@@ -126,14 +126,14 @@ interface RepositoryInterface
     public function paginate(int $limit): Paginator;
 
     /**
-     * Fun fields Description
-     * Created Time 2019-12-04 16:13
+     * Fun fields 查询范围
+     * Created Time 2019-12-09 15:49
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $fields
-     * @param array $except
+     * @param bool $except
      */
-    public function fields(array $fields = [], array $except = []): void;
+    public function fields(array $fields = [], bool $except = false): void;
 
     /**
      * Fun orderBy 排序
