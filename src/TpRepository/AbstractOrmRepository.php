@@ -162,17 +162,18 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
-     * Fun saveAll 批量存储
-     * Created Time 2019-12-09 10:18
+     * Fun saveAll Description
+     * Created Time 2019-12-10 11:18
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $models
      *
-     * @return bool
+     * @return bool|Collection
+     * @throws \Exception
      */
-    public function saveAll(array $models): bool
+    public function saveAll(array $models)
     {
-        return $this->model->save($models);
+        return $this->model->saveAll($models);
     }
 
     /**

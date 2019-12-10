@@ -53,7 +53,7 @@ interface RepositoryInterface
      * @return Model
      * @throws ValidateException
      */
-    public function assign(array $params,string $scene = '', Model $model = null): Model;
+    public function assign(array $params, string $scene = '', Model $model = null): Model;
 
     /**
      * Fun save 存储
@@ -90,15 +90,16 @@ interface RepositoryInterface
     public function batchDelete(array $ids): bool;
 
     /**
-     * Fun saveAll 批量存储
-     * Created Time 2019-12-09 10:18
+     * Fun saveAll Description
+     * Created Time 2019-12-10 11:18
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $models
      *
-     * @return bool
+     * @return bool|Collection
+     * @throws \Exception
      */
-    public function saveAll(array $models): bool;
+    public function saveAll(array $models);
 
     /**
      * Fun check 检测
