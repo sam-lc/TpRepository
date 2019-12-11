@@ -156,7 +156,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
             $model = $this->model;
         }
         $params = array_merge($model->toArray(), $params);
-        $this->check($params, $scene);
+        $params = $this->check($params, $scene);
         foreach ($params as $key => $param) {
             $model->{$key} = $param;
         }
