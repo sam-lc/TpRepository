@@ -138,7 +138,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun assign 赋值操作
-     * Created Time 2019-12-09 11:06
+     * Created Time 2019-12-11 11:55
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param array $params
@@ -146,12 +146,13 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * @param Model|null $model
      *
      * @return Model
+     * @throws RepositoryException
      * @throws ValidateException
      */
     public function assign(array $params, string $scene = '', Model $model = null): Model
     {
         if ($model == null) {
-            $model  = $this->model;
+            $model  = $this->makeModel();
         }
         $params = array_merge($model->toArray(), $params);
         $this->check($params, $scene);
