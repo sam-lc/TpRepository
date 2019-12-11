@@ -152,7 +152,8 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function assign(array $params, string $scene = '', Model $model = null): Model
     {
         if ($model == null) {
-            $model  = $this->makeModel();
+            $this->makeModel();
+            $model = $this->model;
         }
         $params = array_merge($model->toArray(), $params);
         $this->check($params, $scene);
