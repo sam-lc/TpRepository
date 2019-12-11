@@ -152,7 +152,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function assign(array $params, string $scene = '', Model $model = null): Model
     {
         if ($model == null) {
-            $this->makeModel();
+            $this->makeModel(true);
             $model = $this->model;
         }
         $params = array_merge($model->toArray(), $params);
@@ -392,15 +392,16 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun makeModel 实例化Model
-     * Created Time 2019-11-26 18:09
+     * Created Time 2019-12-11 13:52
      * Author lichao <lichao@xiaozhu.com>
      *
+     * @param bool $newInstance
      *
      * @throws RepositoryException
      */
-    protected function makeModel(): void
+    protected function makeModel(bool $newInstance = false): void
     {
-        $model = app()->make($this->model());
+        $model = app()->make($this->model(), [], $newInstance);
         if (!$model instanceof Model) {
             throw new RepositoryException('Class ' . $this->model() . ' must be an instance of think\\Model');
         }
