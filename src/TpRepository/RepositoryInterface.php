@@ -129,15 +129,14 @@ interface RepositoryInterface
 
     /**
      * Fun limit 数量限制
-     * Created Time 2019-12-12 15:23
+     * Created Time 2019-12-12 15:33
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param int $offset
      * @param null $length
      *
-     * @return Query
      */
-    public function limit(int $offset, $length = null): Query;
+    public function limit(int $offset, $length = null);
 
     /**
      * Fun count 总数
