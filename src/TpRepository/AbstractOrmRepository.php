@@ -323,6 +323,21 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     }
 
     /**
+     * Fun count 总数
+     * Created Time 2019-12-12 15:24
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param string $field
+     *
+     * @return float|string
+     */
+    public function count($field = '*')
+    {
+        $this->applyCriteria();
+        return $this->query->count($field = '*');
+    }
+
+    /**
      * Fun fields Description
      * Created Time 2019-12-09 15:49
      * Author lichao <lichao@xiaozhu.com>
