@@ -249,7 +249,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function update(array $params)
     {
         $this->applyCriteria();
-        return $this->query->update($params);
+        $updateRes = $this->query->update($params);
+        $this->resetCriteria();
+        return $updateRes;
     }
 
     /**
@@ -270,6 +272,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
         if ($model == null) {
             throw new ModelNotFoundException('not found  ID = ' . $id . ' record in table' . $this->model->getTable());
         }
+        $this->resetCriteria();
         return $model;
     }
 
@@ -287,7 +290,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function find()
     {
         $this->applyCriteria();
-        return $this->query->find();
+        $model = $this->query->find();
+        $this->resetCriteria();
+        return $model;
     }
 
     /**
@@ -303,7 +308,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function paginate(int $limit): Paginator
     {
         $this->applyCriteria();
-        return $this->query->paginate($limit);
+        $paginator = $this->query->paginate($limit);
+        $this->resetCriteria();
+        return $paginator;
     }
 
     /**
@@ -332,7 +339,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function count($field = '*')
     {
         $this->applyCriteria();
-        return $this->query->count($field);
+        $count = $this->query->count($field);
+        $this->resetCriteria();
+        return $count;
     }
 
     /**
@@ -377,7 +386,9 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function findBy(): Collection
     {
         $this->applyCriteria();
-        return $this->query->select();
+        $collection = $this->query->select();
+        $this->resetCriteria();
+        return $collection;
     }
 
     /**
@@ -417,6 +428,16 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     protected function makeQuery(): void
     {
         $this->query = $this->model->newQuery();
+    }
+
+    /**
+     * Fun resetCriteria 重置查询条件
+     * Created Time 2019-12-12 17:18
+     * Author lichao <lichao@xiaozhu.com>
+     */
+    protected function resetCriteria()
+    {
+        $this->criteria = new Collection();
     }
 
     /**
