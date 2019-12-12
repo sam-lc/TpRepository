@@ -16,6 +16,7 @@ namespace samlc\TpRepository;
 
 use samlc\TpRepository\Exception\ValidateException;
 use think\Collection;
+use think\db\Query;
 use think\Model;
 use think\Paginator;
 
@@ -125,6 +126,29 @@ interface RepositoryInterface
      * @throws \think\exception\DbException
      */
     public function paginate(int $limit): Paginator;
+
+    /**
+     * Fun limit 数量限制
+     * Created Time 2019-12-12 15:23
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param int $offset
+     * @param null $length
+     *
+     * @return Query
+     */
+    public function limit(int $offset, $length = null): Query;
+
+    /**
+     * Fun count 总数
+     * Created Time 2019-12-12 15:31
+     * Author lichao <lichao@xiaozhu.com>
+     *
+     * @param string $field
+     *
+     * @return float|string
+     */
+    public function count($field = '*');
 
     /**
      * Fun fields 查询范围

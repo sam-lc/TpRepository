@@ -316,7 +316,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      *
      * @return Query
      */
-    public function limit(int $offset, $length = null)
+    public function limit(int $offset, $length = null): Query
     {
         $this->applyCriteria();
         return $this->query->limit($offset, $length);
@@ -324,7 +324,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
 
     /**
      * Fun count 总数
-     * Created Time 2019-12-12 15:24
+     * Created Time 2019-12-12 15:31
      * Author lichao <lichao@xiaozhu.com>
      *
      * @param string $field
@@ -334,7 +334,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function count($field = '*')
     {
         $this->applyCriteria();
-        return $this->query->count($field = '*');
+        return $this->query->count($field);
     }
 
     /**
