@@ -317,7 +317,6 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      */
     public function limit(int $offset, $length = null)
     {
-        $this->applyCriteria();
         $this->query = $this->query->limit($offset, $length);
     }
 
