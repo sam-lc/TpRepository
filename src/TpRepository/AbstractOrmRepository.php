@@ -250,7 +250,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->applyCriteria();
         $updateRes = $this->query->update($params);
-        $this->resetCriteria();
+        $this->resetQuery();
         return $updateRes;
     }
 
@@ -272,7 +272,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
         if ($model == null) {
             throw new ModelNotFoundException('not found  ID = ' . $id . ' record in table' . $this->model->getTable());
         }
-        $this->resetCriteria();
+        $this->resetQuery();
         return $model;
     }
 
@@ -291,7 +291,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->applyCriteria();
         $model = $this->query->find();
-        $this->resetCriteria();
+        $this->resetQuery();
         return $model;
     }
 
@@ -309,7 +309,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->applyCriteria();
         $paginator = $this->query->paginate($limit);
-        $this->resetCriteria();
+        $this->resetQuery();
         return $paginator;
     }
 
@@ -340,7 +340,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->applyCriteria();
         $count = $this->query->count($field);
-        $this->resetCriteria();
+        $this->resetQuery();
         return $count;
     }
 
@@ -387,7 +387,7 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     {
         $this->applyCriteria();
         $collection = $this->query->select();
-        $this->resetCriteria();
+        $this->resetQuery();
         return $collection;
     }
 
@@ -435,9 +435,10 @@ abstract class AbstractOrmRepository implements RepositoryInterface
      * Created Time 2019-12-12 17:18
      * Author lichao <lichao@xiaozhu.com>
      */
-    protected function resetCriteria()
+    protected function resetQuery()
     {
         $this->criteria = new Collection();
+        $this->query    = $this->model->newQuery();
     }
 
     /**
