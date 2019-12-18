@@ -192,8 +192,8 @@ abstract class AbstractOrmRepository implements RepositoryInterface
     public function check(array $data = [], $scene = ''): array
     {
         $validator = $this->makeValidator();
-        if ($scene !== '' && $validator != null) {
-            if ($validator->hasScene($scene)) {
+        if ($validator != null) {
+            if ($scene !== '' && $validator->hasScene($scene)) {
                 $validator->scene($scene);
             }
             if (!$validator->check($data)) {
